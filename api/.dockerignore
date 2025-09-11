@@ -1,0 +1,12 @@
+# compiled output
+
+dist
+node_module
+
+# git files
+
+.git
+
+# dotenv environment variable files
+
+.env
