@@ -1,7 +1,7 @@
 import path from "path";
 import request from "supertest";
 import { sql } from "drizzle-orm";
-import { describe, it, beforeAll, afterAll, expect } from "vitest";
+import { describe, it, beforeAll, afterAll, expect, beforeEach } from "vitest";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 
 // setup
@@ -54,5 +54,45 @@ describe("User Registration", () => {
     const res = await request(app).post("/user/register").send(payload);
 
     expect(res.status).toBe(400);
+  });
+});
+
+describe("User Login", () => {
+  const userPayload = {
+    name: "Sehbaz",
+    email: "sehbaz@test.com",
+    password: "123",
+  };
+
+  beforeEach(async () => {
+    await request(app).post("/user/register").send(userPayload);
+  });
+
+  it("returns 200 OK when credentials are valid", async () => {
+    const loginPayload = {
+      email: userPayload.email,
+      password: userPayload.password,
+    };
+
+    const res = await request(app).post("/user/login").send(loginPayload);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("message", "login successful");
+    expect(res.body).toHaveProperty("user");
+    expect(res.body).toHaveProperty("token");
+  });
+
+  it("returns 401 Unauthorized when credentials are invalid", async () => {
+    const invalidLoginPayload = {
+      email: userPayload.email,
+      password: "wrong-password",
+    };
+
+    const res = await request(app)
+      .post("/user/login")
+      .send(invalidLoginPayload);
+
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty("error", "invalid email or password");
   });
 });
