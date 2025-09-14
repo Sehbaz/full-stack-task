@@ -1,10 +1,7 @@
-import Button from "@mui/material/Button";
+import AppRoutes from "./routes/AppRoutes";
+
 function App() {
-  return (
-    <>
-      <Button variant="contained">Hello world</Button>
-    </>
-  );
+  return <AppRoutes />;
 }
 
 export default App;
