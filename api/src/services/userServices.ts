@@ -12,6 +12,27 @@ const getUserByEmail = async (email: string) => {
   return await db.select().from(usersTable).where(eq(usersTable.email, email));
 };
 
+const getUser = async (email: string, password: string) => {
+  const [user] = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.email, email));
+
+  if (!user) return null;
+
+  const isValid = await bcrypt.compare(password, user.password);
+  if (!isValid) return null;
+
+  const token = generateToken({ id: user.id, email: user.email });
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    token,
+  };
+};
+
 const registerUser = async (name: string, email: string, password: string) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -41,4 +62,4 @@ const registerUser = async (name: string, email: string, password: string) => {
   };
 };
 
-export default { getUserByEmail, registerUser };
+export default { getUserByEmail, getUser, registerUser };
