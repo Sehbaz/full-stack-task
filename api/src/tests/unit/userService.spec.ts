@@ -62,7 +62,11 @@ describe("User Service", () => {
   });
 
   it("should register a new user and return a token", async () => {
-    const result = await registerUser("New User", "new@test.com", "pass123");
+    const result = await registerUser({
+      name: "New User",
+      email: "new@test.com",
+      password: "pass123",
+    });
 
     expect(result).toHaveProperty("message", "user registered successfully");
     expect(result.user).toHaveProperty("email", "new@test.com");

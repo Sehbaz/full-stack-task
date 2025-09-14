@@ -3,25 +3,24 @@ import { Request, Response } from "express";
 
 // services
 import userService from "../services/userServices";
+import { User } from "../models/user";
 
 const { registerUser, getUserByEmail, getUser } = userService;
 
 const registerUserHandler = async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
+  const userData: User = { ...req.body };
 
   try {
-    if (!name || !email || !password) {
+    if (!userData.name || !userData.email || !userData.password) {
       return res.status(400).json({ error: "missing required fields" });
     }
 
-    const user = await getUserByEmail(email);
-
-    if (user.length > 0) {
+    const existingUser = await getUserByEmail(userData.email);
+    if (existingUser.length > 0) {
       return res.status(409).json({ error: "user already exists" });
     }
 
-    const result = await registerUser(name, email, password);
-
+    const result = await registerUser(userData);
     return res.status(201).json(result);
   } catch (err: any) {
     return res.status(500).json({ error: err.message });
@@ -37,7 +36,6 @@ const loginUserHandler = async (req: Request, res: Response) => {
     }
 
     const user = await getUser(email, password);
-
     if (!user) {
       return res.status(401).json({ error: "invalid email or password" });
     }

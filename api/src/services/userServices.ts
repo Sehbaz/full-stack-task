@@ -1,12 +1,12 @@
 // libraries
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { eq } from "drizzle-orm";
 
 // db setup
 import { db } from "../db/index";
 import { usersTable } from "../db/schema";
 import { generateToken } from "../utils/auth";
+import { User } from "../models/user";
 
 const getUserByEmail = async (email: string) => {
   return await db.select().from(usersTable).where(eq(usersTable.email, email));
@@ -33,14 +33,14 @@ const getUser = async (email: string, password: string) => {
   };
 };
 
-const registerUser = async (name: string, email: string, password: string) => {
-  const hashedPassword = await bcrypt.hash(password, 10);
+const registerUser = async (userData: User) => {
+  const hashedPassword = await bcrypt.hash(userData.password, 10);
 
   const [user] = await db
     .insert(usersTable)
     .values({
-      name,
-      email,
+      name: userData.name,
+      email: userData.email,
       password: hashedPassword,
     })
     .returning({

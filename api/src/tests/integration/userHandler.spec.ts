@@ -1,3 +1,4 @@
+// libraries
 import path from "path";
 import request from "supertest";
 import { sql } from "drizzle-orm";
@@ -7,6 +8,9 @@ import { migrate } from "drizzle-orm/node-postgres/migrator";
 // setup
 import app from "../../app";
 import { db } from "../../db/index";
+
+// models
+import { User } from "../../models/user";
 
 describe("User Registration", () => {
   // hooks
@@ -21,8 +25,8 @@ describe("User Registration", () => {
     await db.execute(sql`TRUNCATE TABLE users RESTART IDENTITY CASCADE;`);
   });
 
-  it("should create a user successfully", async () => {
-    const payload = {
+  it("returns 200 OK when create a user successfully", async () => {
+    const payload: User = {
       name: "Sehbaz",
       email: "sehbaz@test.com",
       password: "123",
@@ -35,8 +39,8 @@ describe("User Registration", () => {
     expect(res.body.user).toHaveProperty("email", "sehbaz@test.com");
   });
 
-  it("should not create user if user exists", async () => {
-    const payload = {
+  it("returns 409 OK if user exists", async () => {
+    const payload: User = {
       name: "Sehbaz",
       email: "sehbaz@test.com",
       password: "123",
@@ -44,9 +48,10 @@ describe("User Registration", () => {
     const res = await request(app).post("/user/register").send(payload);
 
     expect(res.status).toBe(409);
+    expect(res.body).toHaveProperty("error", "user already exists");
   });
 
-  it("should not create user for missing payload", async () => {
+  it("returns 400 OK for missing payload", async () => {
     const payload = {
       name: "Sehbaz",
       password: "123",
@@ -54,11 +59,12 @@ describe("User Registration", () => {
     const res = await request(app).post("/user/register").send(payload);
 
     expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("error", "missing required fields");
   });
 });
 
 describe("User Login", () => {
-  const userPayload = {
+  const userPayload: User = {
     name: "Sehbaz",
     email: "sehbaz@test.com",
     password: "123",

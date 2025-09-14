@@ -1,9 +1,8 @@
+// libraries
 import jwt from "jsonwebtoken";
 
-interface TokenPayload {
-  id: number;
-  email: string;
-}
+// models
+import { TokenPayload } from "../models/user";
 
 export const generateToken = (payload: TokenPayload): string => {
   return jwt.sign(payload, process.env.JWT_SECRET!, {
