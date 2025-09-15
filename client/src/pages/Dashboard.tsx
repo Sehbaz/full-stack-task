@@ -1,6 +1,13 @@
 import { Box, Button, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
     <Box
       minHeight="100vh"
@@ -12,7 +19,7 @@ const Dashboard = () => {
       px={2}
     >
       <Typography variant="h1" component="h2">
-        Welcome
+        `Welcome`
       </Typography>
 
       <Button
@@ -27,7 +34,7 @@ const Dashboard = () => {
           backgroundColor: "black",
           color: "white",
         }}
-        onClick={() => (window.location.href = "/login")}
+        onClick={logout}
       >
         Log out
       </Button>

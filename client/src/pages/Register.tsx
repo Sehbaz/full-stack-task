@@ -1,5 +1,7 @@
 import {
+  Box,
   Button,
+  CircularProgress,
   Divider,
   Snackbar,
   Stack,
@@ -8,14 +10,42 @@ import {
 } from "@mui/material";
 import AuthLayout from "../components/auth/AuthLayout";
 import { useState } from "react";
+import { useCreateUserMutation } from "../services/userApi";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [open, setOpen] = useState(false);
+  const [newPost, setNewPost] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const submitRegister = () => {
-    setOpen(true);
-    // navigate("/");
+  const [customError, setCustomError] = useState("test notification");
+
+  const submitRegister = async () => {
+    try {
+      await createUser(newPost).unwrap();
+      localStorage.setItem("token", data.token);
+      navigate("/dashboard");
+    } catch (error: any) {
+      console.error("Registration failed:", error);
+
+      const message =
+        error?.data?.error ||
+        error?.error ||
+        error?.message ||
+        "Unknown error occurred";
+
+      setCustomError(message);
+      setOpen(true);
+    }
   };
+
+  const [createUser, { data, isLoading }] = useCreateUserMutation();
+
+  const navigate = useNavigate();
 
   return (
     <AuthLayout
@@ -31,6 +61,9 @@ const Register = () => {
           aria-label="name"
           variant="outlined"
           fullWidth
+          onChange={(e) => {
+            setNewPost((prev) => ({ ...prev, name: e.target.value }));
+          }}
         />
         <TextField
           id="email"
@@ -38,6 +71,9 @@ const Register = () => {
           aria-label="email"
           variant="outlined"
           fullWidth
+          onChange={(e) => {
+            setNewPost((prev) => ({ ...prev, email: e.target.value }));
+          }}
         />
         <TextField
           id="user-password"
@@ -46,6 +82,9 @@ const Register = () => {
           aria-label="user-password"
           variant="outlined"
           fullWidth
+          onChange={(e) => {
+            setNewPost((prev) => ({ ...prev, password: e.target.value }));
+          }}
         />
         <TextField
           id="user-confirm-password"
@@ -54,23 +93,36 @@ const Register = () => {
           aria-label="user-confirm-password"
           variant="outlined"
           fullWidth
-        />
-        <Button
-          id="register"
-          variant="contained"
-          fullWidth
-          size="large"
-          aria-label="register"
-          sx={{
-            boxShadow: 10,
-            py: 1.3,
-            backgroundColor: "black",
-            color: "white",
+          onChange={(e) => {
+            setNewPost((prev) => ({
+              ...prev,
+              confirmPassword: e.target.value,
+            }));
           }}
-          onClick={submitRegister}
-        >
-          Create account
-        </Button>
+        />
+        {!isLoading ? (
+          <Button
+            id="register"
+            variant="contained"
+            fullWidth
+            size="large"
+            aria-label="register"
+            sx={{
+              boxShadow: 10,
+              py: 1.3,
+              backgroundColor: "black",
+              color: "white",
+            }}
+            onClick={submitRegister}
+            disabled={isLoading}
+          >
+            Create account
+          </Button>
+        ) : (
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <CircularProgress color="inherit" />
+          </Box>
+        )}
       </Stack>
       <Divider sx={{ my: 2 }}>
         <Typography align="center" variant="body2" color="text.secondary">
@@ -81,7 +133,7 @@ const Register = () => {
         Already have an account?{" "}
         <span
           style={{ color: "#fb8585", cursor: "pointer" }}
-          onClick={() => (window.location.href = "/login")}
+          onClick={() => navigate("/login")}
         >
           Log in
         </span>
@@ -90,7 +142,7 @@ const Register = () => {
         open={open}
         onClose={() => setOpen(false)}
         autoHideDuration={2000}
-        message="Notification test"
+        message={customError}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       />
     </AuthLayout>

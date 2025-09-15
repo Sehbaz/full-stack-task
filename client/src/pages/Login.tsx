@@ -1,21 +1,55 @@
-import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import AuthLayout from "../components/auth/AuthLayout";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
+import { useLoginUserMutation } from "../services/userApi";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const [open, setOpen] = useState(false);
 
-  const submitLogin = () => {
-    if (email === "" || password === "") setOpen(true);
-    // navigate("/");
+  const [newPost, setNewPost] = useState({
+    email: "",
+    password: "",
+  });
+  const [loginUser, { error: mutationError, isLoading }] =
+    useLoginUserMutation();
+
+  const [customError, setCustomError] = useState("test notification");
+
+  const submitLogin = async () => {
+    try {
+      const response = await loginUser(newPost).unwrap();
+      localStorage.setItem("token", response.token);
+
+      navigate("/dashboard");
+    } catch {
+      setOpen(true);
+    }
   };
+
+  useEffect(() => {
+    if (mutationError) {
+      console.error("login failed:", mutationError);
+      const message =
+        (mutationError as any)?.data?.error ||
+        (mutationError as any)?.error ||
+        (mutationError as any)?.message ||
+        "Unknown error occurred";
+
+      setCustomError(message);
+    }
+  }, [mutationError]);
 
   return (
     <AuthLayout
@@ -30,30 +64,43 @@ const Login = () => {
           aria-label="email"
           variant="outlined"
           fullWidth
+          onChange={(e) => {
+            setNewPost((prev) => ({ ...prev, email: e.target.value }));
+          }}
         />
         <TextField
           label="Password"
           type="password"
           aria-label="user-password"
           variant="outlined"
+          onChange={(e) => {
+            setNewPost((prev) => ({ ...prev, password: e.target.value }));
+          }}
           fullWidth
         />
 
-        <Button
-          variant="contained"
-          fullWidth
-          size="large"
-          aria-label="login"
-          sx={{
-            boxShadow: 10,
-            py: 1.3,
-            backgroundColor: "black",
-            color: "white",
-          }}
-          onClick={submitLogin}
-        >
-          Log in
-        </Button>
+        {!isLoading ? (
+          <Button
+            variant="contained"
+            fullWidth
+            size="large"
+            aria-label="login"
+            sx={{
+              boxShadow: 10,
+              py: 1.3,
+              backgroundColor: "black",
+              color: "white",
+            }}
+            onClick={submitLogin}
+          >
+            Log in
+          </Button>
+        ) : (
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <CircularProgress color="inherit" />
+          </Box>
+        )}
+
         <Divider sx={{ my: 2 }}>
           <Typography align="center" variant="body2" color="text.secondary">
             or
@@ -73,7 +120,7 @@ const Login = () => {
         open={open}
         onClose={() => setOpen(false)}
         autoHideDuration={2000}
-        message="Notification test"
+        message={customError}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       />
     </AuthLayout>
