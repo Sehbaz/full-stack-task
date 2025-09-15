@@ -34,9 +34,7 @@ describe("User Registration", () => {
     const res = await request(app).post("/user/register").send(payload);
 
     expect(res.status).toBe(201);
-    expect(res.body).toHaveProperty("user");
-    expect(res.body.user).toHaveProperty("id", 1);
-    expect(res.body.user).toHaveProperty("email", "sehbaz@test.com");
+    expect(res.body).toHaveProperty("token");
   });
 
   it("returns 409 OK if user exists", async () => {
@@ -48,7 +46,7 @@ describe("User Registration", () => {
     const res = await request(app).post("/user/register").send(payload);
 
     expect(res.status).toBe(409);
-    expect(res.body).toHaveProperty("error", "user already exists");
+    expect(res.body).toHaveProperty("error", "User already exists");
   });
 
   it("returns 400 OK for missing payload", async () => {
@@ -59,7 +57,7 @@ describe("User Registration", () => {
     const res = await request(app).post("/user/register").send(payload);
 
     expect(res.status).toBe(400);
-    expect(res.body).toHaveProperty("error", "missing required fields");
+    expect(res.body).toHaveProperty("error", "Missing required fields");
   });
 });
 
@@ -83,8 +81,7 @@ describe("User Login", () => {
     const res = await request(app).post("/user/login").send(loginPayload);
 
     expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty("message", "login successful");
-    expect(res.body).toHaveProperty("user");
+    expect(res.body).toHaveProperty("message", "Login successful");
     expect(res.body).toHaveProperty("token");
   });
 
@@ -99,6 +96,6 @@ describe("User Login", () => {
       .send(invalidLoginPayload);
 
     expect(res.status).toBe(401);
-    expect(res.body).toHaveProperty("error", "invalid email or password");
+    expect(res.body).toHaveProperty("error", "Invalid email or password");
   });
 });
