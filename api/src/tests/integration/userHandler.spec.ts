@@ -2,8 +2,8 @@
 import path from "path";
 import request from "supertest";
 import { sql } from "drizzle-orm";
-import { describe, it, beforeAll, afterAll, expect, beforeEach } from "vitest";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
+import { describe, it, beforeAll, afterAll, expect, beforeEach } from "vitest";
 
 // setup
 import app from "../../app";

@@ -2,8 +2,8 @@
 import { Request, Response } from "express";
 
 // services
-import userService from "../services/userServices";
 import { User } from "../models/user";
+import userService from "../services/userServices";
 
 const { registerUser, getUserByEmail, getUser } = userService;
 

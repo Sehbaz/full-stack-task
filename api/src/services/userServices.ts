@@ -6,6 +6,8 @@ import { eq } from "drizzle-orm";
 import { db } from "../db/index";
 import { usersTable } from "../db/schema";
 import { generateToken } from "../utils/auth";
+
+// models
 import { User } from "../models/user";
 
 const getUserByEmail = async (email: string) => {
