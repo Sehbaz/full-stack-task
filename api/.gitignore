@@ -5,3 +5,4 @@
 
 # dotenv environment variable files
 .env
+.env.test
