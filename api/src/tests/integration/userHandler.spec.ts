@@ -34,7 +34,9 @@ describe("User Registration", () => {
     const res = await request(app).post("/user/register").send(payload);
 
     expect(res.status).toBe(201);
-    expect(res.body).toHaveProperty("token");
+    expect(res.body).toHaveProperty("user");
+    expect(res.body.user).toHaveProperty("id", 1);
+    expect(res.body.user).toHaveProperty("email", "sehbaz@test.com");
   });
 
   it("returns 409 OK if user exists", async () => {
@@ -82,7 +84,6 @@ describe("User Login", () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("message", "Login successful");
-    expect(res.body).toHaveProperty("token");
   });
 
   it("returns 401 Unauthorized when credentials are invalid", async () => {

@@ -42,7 +42,7 @@ const loginUserHandler = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       message: "Login successful",
-      token: user.token,
+      user,
     });
   } catch (err: any) {
     return res.status(500).json({ error: err.message });

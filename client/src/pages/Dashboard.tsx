@@ -5,8 +5,11 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/login");
   };
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   return (
     <Box
@@ -19,7 +22,7 @@ const Dashboard = () => {
       px={2}
     >
       <Typography variant="h1" component="h2">
-        `Welcome`
+        Welcome {user.name}
       </Typography>
 
       <Button

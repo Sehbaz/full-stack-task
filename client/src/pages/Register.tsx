@@ -26,8 +26,9 @@ const Register = () => {
 
   const submitRegister = async () => {
     try {
-      await createUser(newPost).unwrap();
-      localStorage.setItem("token", data.token);
+      const response = await createUser(newPost).unwrap();
+      localStorage.setItem("token", response.user.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
       navigate("/dashboard");
     } catch (error: any) {
       console.error("Registration failed:", error);

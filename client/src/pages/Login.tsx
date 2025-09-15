@@ -30,7 +30,8 @@ const Login = () => {
   const submitLogin = async () => {
     try {
       const response = await loginUser(newPost).unwrap();
-      localStorage.setItem("token", response.token);
+      localStorage.setItem("token", response.user.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
 
       navigate("/dashboard");
     } catch {
