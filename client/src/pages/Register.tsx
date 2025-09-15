@@ -1,4 +1,4 @@
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import AuthLayout from "../components/auth/AuthLayout";
 
 const Register = () => (
@@ -55,6 +55,20 @@ const Register = () => (
         Create account
       </Button>
     </Stack>
+    <Divider sx={{ my: 2 }}>
+      <Typography align="center" variant="body2" color="text.secondary">
+        or
+      </Typography>
+    </Divider>
+    <Typography align="center" variant="body2" color="text.secondary">
+      Already have an account?{" "}
+      <span
+        style={{ color: "#fb8585", cursor: "pointer" }}
+        onClick={() => (window.location.href = "/login")}
+      >
+        Log in
+      </span>
+    </Typography>
   </AuthLayout>
 );
 

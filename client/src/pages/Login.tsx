@@ -1,9 +1,9 @@
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
 import AuthLayout from "../components/auth/AuthLayout";
 
 const Login = () => (
   <AuthLayout
-    title="Login"
+    title="Log in"
     subtitle="Login to keep your projects flowing."
     gradient="radial-gradient(circle at 30% 30%, #a6cdfb, #5a9cfb, #1d5edb)"
     accentColor="#5a9cfb"
@@ -37,6 +37,20 @@ const Login = () => (
       >
         Log in
       </Button>
+      <Divider sx={{ my: 2 }}>
+        <Typography align="center" variant="body2" color="text.secondary">
+          or
+        </Typography>
+      </Divider>
+      <Typography align="center" variant="body2" color="text.secondary">
+        Already have an account?{" "}
+        <span
+          style={{ color: "#fb8585", cursor: "pointer" }}
+          onClick={() => (window.location.href = "/register")}
+        >
+          Register
+        </span>
+      </Typography>
     </Stack>
   </AuthLayout>
 );
