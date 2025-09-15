@@ -21,10 +21,20 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const [nameError2, setNameError2] = useState(false);
+  const [nameError, setNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
 
   const [customError, setCustomError] = useState("test notification");
 
   const submitRegister = async () => {
+    console.log(newPost);
+    if (newPost.confirmPassword !== newPost.password) {
+      setCustomError("Passwords do not match");
+      setOpen(true);
+      return;
+    }
+
     try {
       const response = await createUser(newPost).unwrap();
       localStorage.setItem("token", response.user.token);
@@ -44,7 +54,7 @@ const Register = () => {
     }
   };
 
-  const [createUser, { data, isLoading }] = useCreateUserMutation();
+  const [createUser, { isLoading }] = useCreateUserMutation();
 
   const navigate = useNavigate();
 
@@ -65,6 +75,7 @@ const Register = () => {
           onChange={(e) => {
             setNewPost((prev) => ({ ...prev, name: e.target.value }));
           }}
+          required
         />
         <TextField
           id="email"
@@ -73,8 +84,19 @@ const Register = () => {
           variant="outlined"
           fullWidth
           onChange={(e) => {
+            if (e.target.validity.valid) {
+              setEmailError(false);
+            } else {
+              setEmailError(true);
+            }
             setNewPost((prev) => ({ ...prev, email: e.target.value }));
           }}
+          error={emailError}
+          helperText={emailError ? "Please enter a valid email" : ""}
+          inputProps={{
+            type: "email",
+          }}
+          required
         />
         <TextField
           id="user-password"
@@ -83,9 +105,19 @@ const Register = () => {
           aria-label="user-password"
           variant="outlined"
           fullWidth
+          value={newPost.password}
           onChange={(e) => {
+            if (e.target.validity.valid) {
+              setNameError(false);
+            } else {
+              setNameError(true);
+            }
             setNewPost((prev) => ({ ...prev, password: e.target.value }));
           }}
+          error={nameError}
+          helperText={nameError ? "Password must be minimum 8 character" : ""}
+          inputProps={{ minLength: 8 }}
+          required
         />
         <TextField
           id="user-confirm-password"
@@ -94,12 +126,22 @@ const Register = () => {
           aria-label="user-confirm-password"
           variant="outlined"
           fullWidth
+          value={newPost.confirmPassword}
           onChange={(e) => {
+            if (e.target.validity.valid) {
+              setNameError2(false);
+            } else {
+              setNameError2(true);
+            }
             setNewPost((prev) => ({
               ...prev,
               confirmPassword: e.target.value,
             }));
           }}
+          error={nameError2}
+          helperText={nameError ? "Password must be minimum 8 character" : ""}
+          inputProps={{ minLength: 8 }}
+          required
         />
         {!isLoading ? (
           <Button

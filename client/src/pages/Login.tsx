@@ -17,6 +17,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
+  const [nameError, setNameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
 
   const [newPost, setNewPost] = useState({
     email: "",
@@ -66,18 +68,39 @@ const Login = () => {
           variant="outlined"
           fullWidth
           onChange={(e) => {
+            if (e.target.validity.valid) {
+              setEmailError(false);
+            } else {
+              setEmailError(true);
+            }
             setNewPost((prev) => ({ ...prev, email: e.target.value }));
           }}
+          error={emailError}
+          helperText={emailError ? "Please enter a valid email" : ""}
+          inputProps={{
+            type: "email",
+          }}
+          required
         />
         <TextField
           label="Password"
           type="password"
           aria-label="user-password"
           variant="outlined"
+          fullWidth
+          value={newPost.password}
           onChange={(e) => {
+            if (e.target.validity.valid) {
+              setNameError(false);
+            } else {
+              setNameError(true);
+            }
             setNewPost((prev) => ({ ...prev, password: e.target.value }));
           }}
-          fullWidth
+          error={nameError}
+          helperText={nameError ? "Password must be minimum 8 character" : ""}
+          inputProps={{ minLength: 8 }}
+          required
         />
 
         {!isLoading ? (
@@ -93,6 +116,7 @@ const Login = () => {
               color: "white",
             }}
             onClick={submitLogin}
+            disabled={emailError || nameError}
           >
             Log in
           </Button>
