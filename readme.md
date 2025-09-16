@@ -24,6 +24,7 @@ cd full-stack-task
 2. Start DB services
 
 ```bash
+cd docker
 docker-compose -f docker-compose-db.yml up -d
 ```
 
