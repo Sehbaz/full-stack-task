@@ -41,6 +41,7 @@ services:
     container_name: cromwell-api
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+      DATABASE_TEST_URL: postgres://postgres:postgres@db_test:5432/postgres_test
       PORT: 3000
       JWT_SECRET: supersecret123
     ports:
