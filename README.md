@@ -1,8 +1,12 @@
-Check out [Live](http://172.237.110.66:5173/login)
-
 This repository provides a full-stack application setup using PostgreSQL, a Node.js API and a Vite frontend.
 
-The environment is orchestrated with Docker Compose.
+The Database is orchestrated with Docker Compose.
+
+## Screenshots
+<img width="3835" height="2313" alt="Screenshot from 2025-09-16 10-24-01" src="https://github.com/user-attachments/assets/c16ba52b-8b99-40de-a36d-fe23e0a4ed8a" />
+<img width="3835" height="2313" alt="Screenshot from 2025-09-16 10-24-18" src="https://github.com/user-attachments/assets/1cfc2c1f-dec1-459c-bb24-ee1042fccf59" />
+<img width="3835" height="2313" alt="Screenshot from 2025-09-16 10-25-15" src="https://github.com/user-attachments/assets/08eec096-9896-4a1b-b572-e7b195f2cb4e" />
+
 
 ## Prerequisites
 
