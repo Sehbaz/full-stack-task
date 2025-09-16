@@ -7,7 +7,7 @@ import type { Credentials, User } from "../models/user";
 const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_URL,
+    baseUrl: "http://localhost:3000",
   }),
   endpoints: (builder) => ({
     createUser: builder.mutation({
