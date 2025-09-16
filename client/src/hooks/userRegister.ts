@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { setCredentials } from "../store/features/auth/authSlice";
 import { useCreateUserMutation } from "../store/services/userApi";
 
+// models
+import type { User } from "../store/models/user";
+
 export const useRegister = () => {
   // hooks
   const navigate = useNavigate();
@@ -14,17 +17,12 @@ export const useRegister = () => {
   const [createUser, { isLoading }] = useCreateUserMutation();
 
   // states
+  const [newUser, setNewUser] = useState<User>({});
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
   const [customError, setCustomError] = useState("test notification");
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
-  const [newUser, setNewUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
 
   // methods
   const submitRegister = async () => {

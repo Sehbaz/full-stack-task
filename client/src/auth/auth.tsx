@@ -1,9 +1,9 @@
 // react
+import { useSelector } from "react-redux";
 import { Outlet, Navigate } from "react-router-dom";
 
 // store
 import type { RootState } from "../store/store";
-import { useSelector } from "react-redux";
 
 const auth = () => {
   // hooks

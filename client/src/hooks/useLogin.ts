@@ -7,13 +7,16 @@ import { useNavigate, useRoutes } from "react-router-dom";
 import { useLoginUserMutation } from "../store/services/userApi";
 import { setCredentials } from "../store/features/auth/authSlice";
 
+//  models
+import type { Credentials } from "../store/models/user";
+
 export const useLogin = () => {
   // states
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
   const [customError, setCustomError] = useState("test notification");
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<Credentials>({
     email: "",
     password: "",
   });

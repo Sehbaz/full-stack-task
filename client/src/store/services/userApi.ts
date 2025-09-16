@@ -1,29 +1,27 @@
 // redux
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+// models
+import type { Credentials, User } from "../models/user";
+
 const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/",
-    prepareHeaders: (headers) => {
-      const token = localStorage.getItem("token");
-      if (token) headers.set("authorization", `Bearer ${token}`);
-      return headers;
-    },
   }),
   endpoints: (builder) => ({
     createUser: builder.mutation({
-      query: (newUser) => ({
+      query: (newUser: User) => ({
         url: "/user/register",
         method: "POST",
         body: newUser,
       }),
     }),
     loginUser: builder.mutation({
-      query: (newUser) => ({
+      query: (credential: Credentials) => ({
         url: "/user/login",
         method: "POST",
-        body: newUser,
+        body: credential,
       }),
     }),
   }),
