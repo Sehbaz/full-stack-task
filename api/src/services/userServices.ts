@@ -59,8 +59,10 @@ const registerUser = async (userData: User) => {
 
   return {
     message: "user registered successfully",
-    user: user,
-    token,
+    user: {
+      ...user,
+      token,
+    },
   };
 };
 

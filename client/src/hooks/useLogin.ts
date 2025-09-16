@@ -1,9 +1,11 @@
 // react
+import { useDispatch } from "react-redux";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useRoutes } from "react-router-dom";
 
 // api
 import { useLoginUserMutation } from "../store/services/userApi";
+import { setCredentials } from "../store/features/auth/authSlice";
 
 export const useLogin = () => {
   // states
@@ -18,6 +20,7 @@ export const useLogin = () => {
 
   // hooks
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loginUser, { error: mutationError, isLoading }] =
     useLoginUserMutation();
 
@@ -25,8 +28,7 @@ export const useLogin = () => {
   const submitLogin = useCallback(async () => {
     try {
       const response = await loginUser(user).unwrap();
-      localStorage.setItem("token", response.user.token);
-      localStorage.setItem("user", JSON.stringify(response.user));
+      dispatch(setCredentials(response));
       navigate("/dashboard");
     } catch {
       setOpenNotification(true);
@@ -45,10 +47,6 @@ export const useLogin = () => {
 
     setCustomError(message);
   }, [mutationError]);
-
-  useEffect(() => {
-    console.log("user", user);
-  }, [user]);
 
   return {
     user,

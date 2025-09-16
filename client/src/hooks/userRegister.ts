@@ -1,10 +1,16 @@
-import { useNavigate } from "react-router-dom";
-import { useCreateUserMutation } from "../store/services/userApi";
+// react
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+// store
+import { setCredentials } from "../store/features/auth/authSlice";
+import { useCreateUserMutation } from "../store/services/userApi";
 
 export const useRegister = () => {
   // hooks
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [createUser, { isLoading }] = useCreateUserMutation();
 
   // states
@@ -30,8 +36,7 @@ export const useRegister = () => {
 
     try {
       const response = await createUser(newUser).unwrap();
-      localStorage.setItem("token", response.user.token);
-      localStorage.setItem("user", JSON.stringify(response.user));
+      dispatch(setCredentials(response));
       navigate("/dashboard");
     } catch (error: any) {
       console.error("Registration failed:", error);

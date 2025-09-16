@@ -1,16 +1,21 @@
 // react
 import { Outlet, Navigate } from "react-router-dom";
 
+// store
+import type { RootState } from "../store/store";
+import { useSelector } from "react-redux";
+
 const auth = () => {
+  // hooks
+  const accessToken = useSelector((state: RootState) => state.auth.user);
+
   const ProtectedRoute = () => {
-    const accessToken = localStorage.getItem("token");
-    if (!accessToken) return <Navigate to="/login" replace />;
+    if (!accessToken?.token) return <Navigate to="/login" replace />;
     return <Outlet />;
   };
 
   const PublicRoute = () => {
-    const accessToken = localStorage.getItem("token");
-    if (accessToken) return <Navigate to="/dashboard" replace />;
+    if (accessToken?.token) return <Navigate to="/dashboard" replace />;
     return <Outlet />;
   };
 

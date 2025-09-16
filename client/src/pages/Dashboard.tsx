@@ -1,32 +1,28 @@
 // react
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 // MUI
 import { Box, Button, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+
+// store
+import type { RootState } from "../store/store";
+
+// api
+import { logout as logoutAction } from "../store/features/auth/authSlice";
 
 const Dashboard = () => {
   // hooks
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   // methods
   const logout = useCallback(() => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    dispatch(logoutAction());
     navigate("/login");
   }, [navigate]);
-
-  const rawUser = localStorage.getItem("user");
-
-  // memos
-  const user = useMemo(() => {
-    try {
-      return rawUser ? JSON.parse(rawUser) : null;
-    } catch (err) {
-      console.error("Failed to parse user from localStorage", err);
-      return null;
-    }
-  }, [rawUser]);
 
   return (
     <Box
@@ -39,7 +35,7 @@ const Dashboard = () => {
       justifyContent="center"
     >
       <Typography variant="h1" component="h2">
-        Welcome {user.name}
+        Welcome {user?.name}
       </Typography>
 
       <Button
