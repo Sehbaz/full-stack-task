@@ -11,6 +11,7 @@ import type { RootState } from "../store/store";
 
 // api
 import { logout as logoutAction } from "../store/features/auth/authSlice";
+import { useAutoLogout } from "../hooks/useAutoLogout";
 
 const Dashboard = () => {
   // hooks
@@ -23,6 +24,9 @@ const Dashboard = () => {
     dispatch(logoutAction());
     navigate("/login");
   }, [navigate]);
+
+  // logout
+  useAutoLogout(user?.token || "");
 
   return (
     <Box
