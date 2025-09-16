@@ -1,3 +1,5 @@
+Check out [Live](http://172.237.110.66:5173/login)
+
 This repository provides a full-stack application setup using PostgreSQL, a Node.js API and a Vite frontend.
 
 The environment is orchestrated with Docker Compose.
