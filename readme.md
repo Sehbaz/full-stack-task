@@ -21,18 +21,34 @@ git clone git@github.com:Sehbaz/full-stack-task.git
 cd full-stack-task
 ```
 
-2. Start all services
+2. Start DB services
 
 ```bash
-docker compose up -d
+docker compose -f docker-compose-db.yml up -d
 ```
 
-3. Run frontend tst
+3. Run frontend
+
+```bash
+cd full-stack-task/client
+npm i
+npm run dev
+```
+
+5. Run frontend test
 
 ```bash
 cd full-stack-task/client
 npm i
 npm run test
+```
+
+3. Run frontend api
+
+```bash
+cd full-stack-task/api
+npm i
+npm run dev
 ```
 
 5. Run api unit test
@@ -55,11 +71,3 @@ npm run test:integration
 
 - API: http://localhost:3000
 - Frontend: http://localhost:5173
-
-## Services
-
-- db – PostgreSQL for development (port 15432)
-- db_test – PostgreSQL for testing (port 25432)
-- migrations – Runs database migrations against the development DB
-- api – Node.js backend API (port 3000)
-- frontend – Vite React (or similar) frontend (port 5173)

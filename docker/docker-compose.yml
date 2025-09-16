@@ -39,6 +39,7 @@ services:
   api:
     build: ../api
     container_name: cromwell-api
+
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
       DATABASE_TEST_URL: postgres://postgres:postgres@db_test:5432/postgres_test
@@ -57,6 +58,26 @@ services:
       "
     depends_on:
       - db
+
+  test:
+    build: ../api
+    container_name: cromwell-api-tests
+    environment:
+      DATABASE_TEST_URL: postgres://postgres:postgres@db_test:5432/postgres_test
+      NODE_ENV: test
+    command: >
+      sh -c "
+        echo 'Waiting for test DB...' &&
+        until pg_isready -h db_test -U postgres; do
+          echo 'Waiting for db_test...'
+          sleep 1
+        done &&
+        echo 'Running API integration tests...' &&
+        npm run test:integration
+      "
+    depends_on:
+      - db_test
+      - api
 
   frontend:
     build: ../client
