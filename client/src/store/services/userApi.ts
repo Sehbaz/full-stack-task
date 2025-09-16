@@ -1,3 +1,4 @@
+// redux
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const userApi = createApi({
@@ -11,9 +12,6 @@ const userApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getUser: builder.query({
-      query: (id) => `user/${id}`,
-    }),
     createUser: builder.mutation({
       query: (newUser) => ({
         url: "/user/register",
@@ -31,6 +29,5 @@ const userApi = createApi({
   }),
 });
 
-export const { useGetUserQuery, useCreateUserMutation, useLoginUserMutation } =
-  userApi;
+export const { useCreateUserMutation, useLoginUserMutation } = userApi;
 export default userApi;

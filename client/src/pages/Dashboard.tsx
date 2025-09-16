@@ -1,43 +1,59 @@
-import { Box, Button, Typography } from "@mui/material";
+// react
+import { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
+// MUI
+import { Box, Button, Typography } from "@mui/material";
+
 const Dashboard = () => {
+  // hooks
   const navigate = useNavigate();
-  const logout = () => {
+
+  // methods
+  const logout = useCallback(() => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/login");
-  };
+  }, [navigate]);
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const rawUser = localStorage.getItem("user");
+
+  // memos
+  const user = useMemo(() => {
+    try {
+      return rawUser ? JSON.parse(rawUser) : null;
+    } catch (err) {
+      console.error("Failed to parse user from localStorage", err);
+      return null;
+    }
+  }, [rawUser]);
 
   return (
     <Box
-      minHeight="100vh"
-      bgcolor="#e4e4e4ff"
+      px={2}
       display="flex"
+      minHeight="100vh"
+      alignItems="center"
+      bgcolor="#e4e4e4ff"
       flexDirection="column"
       justifyContent="center"
-      alignItems="center"
-      px={2}
     >
       <Typography variant="h1" component="h2">
         Welcome {user.name}
       </Typography>
 
       <Button
-        variant="contained"
         size="large"
+        onClick={logout}
         aria-label="login"
+        variant="contained"
         sx={{
-          boxShadow: 10,
           py: 1.3,
           px: 6.3,
-
-          backgroundColor: "black",
           color: "white",
+          boxShadow: 10,
+          backgroundColor: "black",
         }}
-        onClick={logout}
       >
         Log out
       </Button>

@@ -1,5 +1,7 @@
+// redex
 import { configureStore } from "@reduxjs/toolkit";
 
+// api
 import userApi from "./services/userApi";
 
 const store = configureStore({

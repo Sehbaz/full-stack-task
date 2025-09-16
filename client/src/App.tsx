@@ -1,5 +1,8 @@
-import AppRoutes from "./routes/AppRoutes";
+// MUI
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+// routes
+import AppRoutes from "./routes/AppRoutes";
 
 const theme = createTheme({
   typography: {
@@ -20,12 +23,12 @@ const theme = createTheme({
   },
 });
 
-function App() {
+const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <AppRoutes />
     </ThemeProvider>
   );
-}
+};
 
 export default App;

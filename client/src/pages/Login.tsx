@@ -1,122 +1,99 @@
+// react
+import { useNavigate } from "react-router-dom";
+
+// MUI
 import {
   Box,
-  Button,
-  CircularProgress,
-  Divider,
   Stack,
+  Button,
+  Divider,
   TextField,
   Typography,
+  CircularProgress,
 } from "@mui/material";
-import AuthLayout from "../components/auth/AuthLayout";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
-import { useLoginUserMutation } from "../services/userApi";
+
+// components
+import AuthLayout from "../components/auth/AuthLayout";
+
+// hooks
+import { useLogin } from "../hooks/useLogin";
 
 const Login = () => {
+  // hooks
+  const {
+    user,
+    setUser,
+    emailError,
+    setEmailError,
+    passwordError,
+    setPasswordError,
+    openNotification,
+    setOpenNotification,
+    customError,
+    submitLogin,
+    isLoading,
+  } = useLogin();
   const navigate = useNavigate();
-
-  const [open, setOpen] = useState(false);
-  const [nameError, setNameError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-
-  const [newPost, setNewPost] = useState({
-    email: "",
-    password: "",
-  });
-  const [loginUser, { error: mutationError, isLoading }] =
-    useLoginUserMutation();
-
-  const [customError, setCustomError] = useState("test notification");
-
-  const submitLogin = async () => {
-    try {
-      const response = await loginUser(newPost).unwrap();
-      localStorage.setItem("token", response.user.token);
-      localStorage.setItem("user", JSON.stringify(response.user));
-
-      navigate("/dashboard");
-    } catch {
-      setOpen(true);
-    }
-  };
-
-  useEffect(() => {
-    if (mutationError) {
-      console.error("login failed:", mutationError);
-      const message =
-        (mutationError as any)?.data?.error ||
-        (mutationError as any)?.error ||
-        (mutationError as any)?.message ||
-        "Unknown error occurred";
-
-      setCustomError(message);
-    }
-  }, [mutationError]);
 
   return (
     <AuthLayout
       title="Log in"
+      accentColor="#5a9cfb"
       subtitle="Login to keep your projects flowing."
       gradient="radial-gradient(circle at 30% 30%, #a6cdfb, #5a9cfb, #1d5edb)"
-      accentColor="#5a9cfb"
     >
       <Stack spacing={2} mb={2}>
         <TextField
+          required
+          fullWidth
           label="Your email"
           aria-label="email"
           variant="outlined"
-          fullWidth
-          onChange={(e) => {
-            if (e.target.validity.valid) {
-              setEmailError(false);
-            } else {
-              setEmailError(true);
-            }
-            setNewPost((prev) => ({ ...prev, email: e.target.value }));
-          }}
           error={emailError}
+          value={user.email}
           helperText={emailError ? "Please enter a valid email" : ""}
           inputProps={{
             type: "email",
           }}
-          required
+          onChange={(e) => {
+            setEmailError(!e.target.validity.valid);
+            setUser((prev) => ({ ...prev, email: e.target.value }));
+          }}
         />
         <TextField
-          label="Password"
-          type="password"
-          aria-label="user-password"
-          variant="outlined"
-          fullWidth
-          value={newPost.password}
-          onChange={(e) => {
-            if (e.target.validity.valid) {
-              setNameError(false);
-            } else {
-              setNameError(true);
-            }
-            setNewPost((prev) => ({ ...prev, password: e.target.value }));
-          }}
-          error={nameError}
-          helperText={nameError ? "Password must be minimum 8 character" : ""}
-          inputProps={{ minLength: 8 }}
           required
+          fullWidth
+          type="password"
+          label="Password"
+          variant="outlined"
+          error={passwordError}
+          aria-label="user-password"
+          value={user.password}
+          helperText={
+            passwordError ? "Password must be minimum 8 character" : ""
+          }
+          inputProps={{ minLength: 8 }}
+          onChange={(e) => {
+            setPasswordError(!e.target.validity.valid);
+            setUser((prev) => ({ ...prev, password: e.target.value }));
+          }}
         />
 
         {!isLoading ? (
           <Button
-            variant="contained"
             fullWidth
             size="large"
             aria-label="login"
-            sx={{
-              boxShadow: 10,
-              py: 1.3,
-              backgroundColor: "black",
-              color: "white",
-            }}
+            variant="contained"
             onClick={submitLogin}
-            disabled={emailError || nameError}
+            disabled={emailError || passwordError}
+            sx={{
+              py: 1.3,
+              color: "white",
+              boxShadow: 10,
+              backgroundColor: "black",
+            }}
           >
             Log in
           </Button>
@@ -134,18 +111,18 @@ const Login = () => {
         <Typography align="center" variant="body2" color="text.secondary">
           Already have an account?{" "}
           <span
-            style={{ color: "#fb8585", cursor: "pointer" }}
             onClick={() => navigate("/register")}
+            style={{ color: "#fb8585", cursor: "pointer" }}
           >
             Register
           </span>
         </Typography>
       </Stack>
       <Snackbar
-        open={open}
-        onClose={() => setOpen(false)}
-        autoHideDuration={2000}
         message={customError}
+        open={openNotification}
+        autoHideDuration={2000}
+        onClose={() => setOpenNotification(false)}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       />
     </AuthLayout>

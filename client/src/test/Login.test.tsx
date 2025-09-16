@@ -1,10 +1,16 @@
+// react
+import { MemoryRouter } from "react-router-dom";
+
+// libraries
+import { Provider } from "react-redux";
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 
+// pages
 import Login from "../pages/Login";
-import { Provider } from "react-redux";
-import store from "../store";
-import { MemoryRouter } from "react-router-dom";
+
+// store
+import store from "../store/store";
 
 describe("Login page", () => {
   it("should render login page", () => {

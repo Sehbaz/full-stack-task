@@ -1,5 +1,8 @@
-import { Box, Container, Grid, Paper, Stack, Typography } from "@mui/material";
+// react
 import type { ReactNode } from "react";
+
+// MUI
+import { Box, Container, Grid, Paper, Stack, Typography } from "@mui/material";
 
 interface AuthLayoutProps {
   title: string;
@@ -17,31 +20,31 @@ const AuthLayout = ({
   children,
 }: AuthLayoutProps) => (
   <Box
-    minHeight="100vh"
-    bgcolor="#e4e4e4ff"
-    display="flex"
-    justifyContent="center"
-    alignItems="center"
     px={2}
+    display="flex"
+    minHeight="100vh"
+    alignItems="center"
+    bgcolor="#e4e4e4ff"
+    justifyContent="center"
   >
     <Paper
       elevation={3}
       sx={{
+        width: "100%",
+        maxWidth: 600,
         borderRadius: 5,
         overflow: "hidden",
-        maxWidth: 600,
-        width: "100%",
       }}
     >
       <Grid>
         <Grid
           sx={{
+            color: "white",
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
             p: { xs: 3, md: 6 },
             background: gradient,
-            color: "white",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
           <Typography variant="h6" fontWeight={800} gutterBottom>
@@ -55,24 +58,24 @@ const AuthLayout = ({
         <Grid
           sx={{
             display: "flex",
+            bgcolor: "#fff",
+            p: { xs: 4, md: 6 },
             alignItems: "center",
             justifyContent: "center",
-            p: { xs: 4, md: 6 },
-            bgcolor: "#fff",
           }}
         >
           <Container maxWidth={false} disableGutters sx={{ p: 0 }}>
             <Box mb={3}>
               <Typography
+                mb={1}
                 variant="h2"
                 fontWeight={700}
                 fontSize={{ xs: "1.6rem", md: "2rem" }}
-                mb={1}
               >
                 <span
                   style={{
-                    color: accentColor,
                     fontSize: 60,
+                    color: accentColor,
                     verticalAlign: "middle",
                   }}
                 >

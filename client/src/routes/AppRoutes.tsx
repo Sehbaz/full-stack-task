@@ -1,47 +1,38 @@
-// react dom
+// react
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
-  Outlet,
+  BrowserRouter as Router,
 } from "react-router-dom";
 
-// views
+// pages
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
 
-const ProtectedRoute = () => {
-  const accessToken = localStorage.getItem("token");
-  if (!accessToken) return <Navigate to="/login" replace />;
-  return <Outlet />;
-};
+// auth
+import auth from "../auth/auth";
 
-const PublicRoute = () => {
-  const accessToken = localStorage.getItem("token");
-  if (accessToken) return <Navigate to="/dashboard" replace />;
-  return <Outlet />;
-};
 /*
  * AppRoutes centralized entire app routes
  */
 const AppRoutes = () => {
+  // hooks
+  const { ProtectedRoute, PublicRoute } = auth();
+
   return (
     <Router>
       <Routes>
-        {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
 
-        {/* Public routes */}
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Route>
 
-        {/* Redirect all unknown paths */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>

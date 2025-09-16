@@ -1,12 +1,16 @@
-// libraries
-import { describe, expect, it } from "vitest";
-import { Provider } from "react-redux";
+// react
 import { MemoryRouter } from "react-router-dom";
+
+// libraries
+import { Provider } from "react-redux";
+import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 
 // pages
 import Register from "../pages/Register";
-import store from "../store";
+
+// store
+import store from "../store/store";
 
 describe("Register page", () => {
   it("should render register page", () => {
