@@ -61,7 +61,7 @@ services:
     build: ../client
     container_name: cromwell-frontend
     environment:
-      REACT_APP_API_URL: http://api:3000
+      VITE_API_URL: http://api:3000
     ports:
       - "5173:5173"
     depends_on:

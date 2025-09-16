@@ -34,8 +34,17 @@ const Dashboard = () => {
       flexDirection="column"
       justifyContent="center"
     >
-      <Typography variant="h1" component="h2">
-        Welcome {user?.name}
+      <Typography
+        variant="h1"
+        component="h2"
+        sx={{
+          textAlign: "center",
+          maxWidth: "90%",
+          wordBreak: "break-word",
+          fontSize: { xs: "2rem", md: "3rem" },
+        }}
+      >
+        Welcome, {user?.name}
       </Typography>
 
       <Button
@@ -44,6 +53,7 @@ const Dashboard = () => {
         aria-label="login"
         variant="contained"
         sx={{
+          my: 3.2,
           py: 1.3,
           px: 6.3,
           color: "white",
