@@ -40,7 +40,7 @@ npm i
 npm run dev
 ```
 
-5. Run frontend test
+4. Run frontend test
 
 ```bash
 cd full-stack-task/client
@@ -48,7 +48,22 @@ npm i
 npm run test
 ```
 
-3. Run frontend api
+ 5. Create .env file in api
+```
+ cd api
+```
+`
+DATABASE_URL=postgres://postgres:postgres@localhost:15432/postgres
+JWT_SECRET=topsecret
+`
+
+6. Run migration in api
+```
+cd api
+npm run db:migrate
+```
+
+7. Run frontend api
 
 ```bash
 cd full-stack-task/api
@@ -56,7 +71,7 @@ npm i
 npm run dev
 ```
 
-5. Run api unit test
+8. Run api unit test
 
 ```bash
 cd full-stack-task/api
@@ -64,7 +79,7 @@ npm i
 npm run test:unit
 ```
 
-6. Run api unit test
+9. Run api unit test
 
 ```bash
 cd full-stack-task/api
@@ -72,7 +87,7 @@ npm i
 npm run test:integration
 ```
 
-5. Access the services:
+10. Access the services:
 
 - API: http://localhost:3000
 - Frontend: http://localhost:5173
